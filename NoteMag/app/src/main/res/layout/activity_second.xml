@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".secondActivity"
+    android:orientation="vertical"
+    android:padding="15dp">
+    <EditText
+        android:id="@+id/edtWord"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+ />
+    <EditText
+        android:id="@+id/edtDef"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnBack"
+        android:layout_width="100dp"
+        android:layout_height="90dp"
+        android:background="@drawable/back" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnAdd"
+        android:layout_width="100dp"
+        android:layout_height="90dp"
+        android:background="@drawable/add"
+ />
+
+</LinearLayout>

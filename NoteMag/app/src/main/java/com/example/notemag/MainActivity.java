@@ -30,9 +30,8 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity{
-public  String sJson="";
-private final LinkedList<WordDict> mWordList=new LinkedList<WordDict>();
-private final LinkedList<WordDict> mWordListALL=new LinkedList<WordDict>();
+public final String path="http://192.168.1.92/api/api.php";
+private static LinkedList<WordDict> mWordList=new LinkedList<WordDict>();
 private RecyclerView recyclerView;
 private WordListAdapter wordListAdapter;
 private EditText txtTk;
@@ -43,41 +42,15 @@ private Button btnTK;
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        InputStream is= getApplicationContext().getResources().openRawResource(R.raw.dictionary);
-        BufferedReader br=new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb= new StringBuilder();
-        String s=null;
-        while(true) {
-            try{
-                if(!((s=br.readLine())!=null))break;
-            }catch (IOException e){
-                e.printStackTrace();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                GetData data=new GetData(MainActivity.this);
+                data.execute(path);
+                mWordList=data.getmWordList();
             }
-            sb.append(s);
-            sb.append("\n");
-        }
-        sJson=sb.toString();
+        });
 
-        try{
-            JSONObject jsonRoot=new JSONObject(sJson);
-            JSONArray jsonArray=jsonRoot.getJSONArray("ds");
-            int lenght=jsonArray.length();
-            int dem=0;
-            for(int i=0;i<lenght;i++)
-            {
-                WordDict word= new WordDict(jsonArray.getJSONObject(i).getString("word"),jsonArray.getJSONObject(i).getString("definition"));
-                dem++;
-                if(dem<11)
-                {
-                    mWordList.addLast(word);
-                }
-                mWordListALL.addLast(word);
-            }
-
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
 
         recyclerView=findViewById(R.id.recycler);
 
@@ -103,11 +76,11 @@ private Button btnTK;
             public void onClick(View view) {
                 LinkedList<WordDict> result = new LinkedList<WordDict>();
                 int dem = 0;
-                int count = mWordListALL.size();
+                int count = mWordList.size();
                 for (int i = 0; i < count; i++) {
-
-                    if (mWordListALL.get(i).toString().toLowerCase().indexOf(txtTk.getText().toString()) >= 0&&dem<11) {
-                        result.addLast(mWordListALL.get(i));
+                    mWordList.get(i).toString().toLowerCase();
+                    if (mWordList.get(i).toString().toLowerCase().indexOf(txtTk.getText().toString()) >= 0&&dem<11) {
+                        result.addLast(mWordList.get(i));
                         dem++;
                     }
                 }

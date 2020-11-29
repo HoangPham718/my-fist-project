@@ -23,6 +23,8 @@ private Button btnBack;
 private Button btnAdd;
 private EditText edtWord;
 private EditText edtDef;
+private final String pathInsert="http://192.168.1.92/api/insert.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,64 +47,45 @@ private EditText edtDef;
             @Override
             public void onClick(View v) {
                 int l=0;
+                String word=edtWord.getText().toString();
+                String def=edtDef.getText().toString();
                 //kt word
-                if(edtWord.getText().toString().isEmpty())
+                if(word.isEmpty())
                 {
                     Toast.makeText(getApplicationContext(),"Không được bỏ trống từ",Toast.LENGTH_SHORT).show();
                     l=1;
                 }
-                if(edtWord.getText().toString().contains(" "))
+                if(word.contains(" "))
                 {
                     Toast.makeText(getApplicationContext(),"Không được điền khoảng trắng",Toast.LENGTH_SHORT).show();
                     l=1;
                 }
                 //kt định nghĩa
-                if (edtDef.getText().toString().isEmpty())
+                if (def.isEmpty())
                 {
                     Toast.makeText(getApplicationContext(), "Phần định nghĩa không được bỏ trống", Toast.LENGTH_LONG).show();
-                }
-                    int count = 0;
-                    char space;
-                    for (int i = 0; i < edtDef.getText().toString().length(); i++)
-                    {
-                        space = edtDef.getText().toString().charAt(i);
-                        if (Character.isSpaceChar(space))
-                            count++;
-                    }
-
-                    if(count < 2)
-                        Toast.makeText(getApplicationContext(), "Phần định nghĩa ít nhất 3 từ", Toast.LENGTH_LONG).show();
-              /*  if(l!=1)
-                {
-                    InputStream is= getApplicationContext().getResources().openRawResource(R.raw.dictionary);
-                    BufferedReader br=new BufferedReader(new InputStreamReader(is));
-                    StringBuilder sb= new StringBuilder();
-                    String s=null;
-                    while(true) {
-                        try{
-                            if(!((s=br.readLine())!=null))break;
-                        }catch (IOException e){
-                            e.printStackTrace();
-                        }
-                        sb.append(s);
-                        sb.append("\n");
-                    }
-
-                    try {
-                        JSONObject jsonObject=new JSONObject(sb.toString());
-                        JSONObject jsonObj=new JSONObject();
-                        JSONObject jObj=new JSONObject();
-                        jsonObj.put("word", edtWord.getText().toString());
-                        jsonObj.put("definition", edtDef.getText().toString());
-                        JSONArray jsonArray=jsonObject.getJSONArray("ds");
-                        jsonArray.put(jsonObj);
-                        Toast.makeText(getApplicationContext(),"Thêm thành công",Toast.LENGTH_SHORT).show();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    l=1;
                 }
 
-               */
+//                int count = 0;
+//                char space;
+//                for (int i = 0; i < def.toString().length(); i++)
+//                {
+//                    space = def.toString().charAt(i);
+//                    if (Character.isSpaceChar(space))
+//                        count++;
+//                }
+//                if(count < 2)
+//                {
+//                    Toast.makeText(getApplicationContext(), "Phần định nghĩa ít nhất 3 từ", Toast.LENGTH_LONG).show();
+//                    l=1;
+//                }
+
+                //thêm vào
+                if(l!=1) {
+                    WordDict newWord= new WordDict(word,def);
+                            new InsertData(getApplicationContext(),newWord,"1",0).execute(pathInsert);
+                }
             }
         });
     }
